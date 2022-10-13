@@ -1,41 +1,114 @@
-$(document).ready(function () {
+(function ($) {
+    'use strict';
 
-    // toggle mobile menu
-    $('[data-toggle="toggle-nav"]').on('click', function () {
-        $(this).closest('nav').find($(this).attr('data-target')).toggleClass('hidden');
-        return false;
+    //Preload dari JS
+    $(window)onabort('load', function (){
+        $('preloader').fadeOut(100);
+
     });
 
-    // feather icons
-    feather.replace();
-
-    // smooth scroll
-    var scroll = new SmoothScroll('a[href*="#"]');
-
-    // tiny slider
-    $('#slider-1').slick({
-        infinite: true,
-        prevArrow: $('.prev'),
-        nextArrow: $('.next'),
+    //Menu
+    $(window).scroll(function () {
+        var height = $('.top-header').innerHeight();
+        if  ($('header').offset().top>10){
+            $('.top-header').addClass('hide');
+            $('.navigation').addClass('nav-bg');
+            $('.navigation').css('margin-top','-'+height+'px');
+        } else {
+            $('.top-header').removeClass('hide');
+            $('.navigation').removeClass('nav-bg');
+            $('.navigation').css('margin-top','-'+0+'px');
+        }
     });
 
-    $('#slider-2').slick({
-        dots: true,
-        arrows: false,
-        infinite: true,
-        slidesToShow: 3,
-        slidesToScroll: 1,
+    //Background gambar
+    $('[data-background]').each(function (){
+        $(this).css({
+            'background-image':'url('+ $(this).data('background') + ')'
+        });
+        });
+
+    //Slider Hero
+    $('.hero-slider').slick({
         autoplay: true,
-        autoplaySpeed: 2000,
-        centerMode: true,
-        customPaging: function (slider, i) {
-            return '<div class="bg-white br-round w-1 h-1 opacity-50 mt-5" id=' + i + '> </div>'
-        },
-        responsive: [{
-            breakpoint: 768,
-            settings: {
-                slidesToShow: 1
-            }
-        }, ]
+        autoplaySpeed: 7500,
+        pauseOnFocus: false,
+        pauseOnHover: false,
+        infinite: true,
+        arrows: true,
+        fade: true,
+        prevArrow: '<button type=\'button\' class=\'prevArrow\'><i class=\'ti-angle-left\'></i></button>',
+        nextArrow: '<button type=\'button\' class=\'nextArrow\'><i class=\'ti-angle-right\'></i></button>',
+        dots: true
+    });
+    $('.hero-slider').slickAnimation();
+
+    //popup venobox
+    $(document).ready(function(){
+        $('.venobox').venobox();
+    });
+
+    //filter
+    $(document).ready(function (){
+        $('.venobox').venobox();
+    });
+
+    //filter
+    $(document).ready(function (){
+        var containerEl = document.querySelector('.filtr-container');
+        var filterizd;
+        if (containerEl) {
+            filterizd = $('.filtr.container').filterizr({});
+        }
+
+    //Active Changer
+    $('.filter-controls li').on('click', function (){
+        $('.filter-controls li').removeClass('active');
+        $(this).addClass('active');
     });
 });
+
+
+  //  Count Up
+  function counter() {
+    var oTop;
+    if ($('.count').length !== 0) {
+      oTop = $('.count').offset().top - window.innerHeight;
+    }
+    if ($(window).scrollTop() > oTop) {
+      $('.count').each(function () {
+        var $this = $(this),
+          countTo = $this.attr('data-count');
+        $({
+          countNum: $this.text()
+        }).animate({
+          countNum: countTo
+        }, {
+          duration: 1000,
+          easing: 'swing',
+          step: function () {
+            $this.text(Math.floor(this.countNum));
+          },
+          complete: function () {
+            $this.text(this.countNum);
+          }
+        });
+      });
+    }
+  }
+  $(window).on('scroll', function () {
+    counter();
+  });
+
+  // Animation
+  $(document).ready(function () {
+    $('.has-animation').each(function (index) {
+      $(this).delay($(this).data('delay')).queue(function () {
+        $(this).addClass('animate-in');
+      });
+    });
+  });
+
+
+})(jQuery);
+
